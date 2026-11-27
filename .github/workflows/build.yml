@@ -1,4 +1,4 @@
-﻿name: Build arm64e deb
+name: Build arm64e deb
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: 下载源码
         run: |
-          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/vjznMjiCJz"
+          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/UXklUAV2AK"
           rm -rf "$HOME/src"
           mkdir -p "$HOME/src"
           unzip -q /tmp/src.zip -d "$HOME/src"
