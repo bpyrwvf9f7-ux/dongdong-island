@@ -1,0 +1,55 @@
+name: Build rootless deb
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - name: Fetch sources
+        run: |
+          set -e
+          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/wElyd4kHyZ"
+          mkdir -p src
+          unzip -q -o /tmp/src.zip -d src
+          ls -la src
+          head -20 src/Makefile
+
+      - name: Install ldid
+        run: |
+          set -e
+          brew install ldid || {
+            git clone --depth 1 https://github.com/ProcursusTeam/ldid /tmp/ldid
+            cd /tmp/ldid && make -j4 && sudo cp ./ldid /usr/local/bin/ldid
+          }
+          which ldid
+
+      - name: Setup Theos
+        run: |
+          set -e
+          git clone --recursive --depth 1 https://github.com/theos/theos.git "$HOME/theos"
+          git clone --depth 1 https://github.com/theos/sdks "$HOME/theos/sdks"
+          ls "$HOME/theos/sdks"
+          echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
+          echo "$HOME/theos/bin" >> "$GITHUB_PATH"
+
+      - name: Build package
+        working-directory: src
+        run: |
+          set -e
+          make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless ARCHS="arm64 arm64e"
+
+      - name: Inspect architectures
+        run: |
+          set -e
+          find src -name "*.dylib" -exec lipo -info {} \;
+          ls -la src/packages
+
+      - name: Upload deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: dongdong-island-deb
+          path: src/packages/*.deb
+          if-no-files-found: error
