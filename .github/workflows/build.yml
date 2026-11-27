@@ -11,7 +11,7 @@ jobs:
       - name: Fetch sources
         run: |
           set -e
-          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/wElyd4kHyZ"
+          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/VpLv2XGbV8"
           mkdir -p src
           unzip -q -o /tmp/src.zip -d src
           ls -la src
