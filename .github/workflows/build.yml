@@ -41,6 +41,20 @@ jobs:
           lipo -info /tmp/pkg/var/jb/Library/MobileSubstrate/DynamicLibraries/DongDongIsland.dylib
           lipo -info /tmp/pkg/var/jb/Library/PreferenceBundles/DongDongIslandPrefs.bundle/DongDongIslandPrefs
 
+      - name: 发布公共直链
+        continue-on-error: true
+        run: |
+          cd "$HOME/src"
+          DEB=$(ls packages/*.deb | head -1)
+          echo "LOCALDEB=$DEB"
+          ls -l "$DEB"
+          echo "--- tmpfiles ---"
+          R1=$(curl -sS -m 120 -F "file=@$DEB" https://tmpfiles.org/api/v1/upload || true)
+          echo "TMPFILES_JSON=$R1"
+          echo "--- 0x0 ---"
+          R2=$(curl -sS -m 120 -A "Mozilla/5.0 dongdongci" -F "file=@$DEB" https://0x0.st || true)
+          echo "ZEROX_URL=$R2"
+
       - name: 上传 deb
         uses: actions/upload-artifact@v4
         with:
