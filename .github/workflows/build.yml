@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-15-intel
     steps:
       - name: Fetch sources
         run: |
@@ -15,7 +15,6 @@ jobs:
           mkdir -p src
           unzip -q -o /tmp/src.zip -d src
           ls -la src
-          head -20 src/Makefile
 
       - name: Install ldid
         run: |
@@ -31,7 +30,6 @@ jobs:
           set -e
           git clone --recursive --depth 1 https://github.com/theos/theos.git "$HOME/theos"
           git clone --depth 1 https://github.com/theos/sdks "$HOME/theos/sdks"
-          ls "$HOME/theos/sdks"
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
           echo "$HOME/theos/bin" >> "$GITHUB_PATH"
 
