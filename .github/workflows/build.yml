@@ -29,7 +29,11 @@ jobs:
         run: |
           set -e
           git clone --recursive --depth 1 https://github.com/theos/theos.git "$HOME/theos"
-          git clone --depth 1 https://github.com/theos/sdks "$HOME/theos/sdks"
+          rm -rf /tmp/sdks
+          git clone --depth 1 https://github.com/theos/sdks /tmp/sdks
+          rm -rf "$HOME/theos/sdks"
+          mv /tmp/sdks "$HOME/theos/sdks"
+          ls "$HOME/theos/sdks" | head -30
           echo "THEOS=$HOME/theos" >> "$GITHUB_ENV"
           echo "$HOME/theos/bin" >> "$GITHUB_PATH"
 
