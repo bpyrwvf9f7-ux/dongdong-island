@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: 下载源码
         run: |
-          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/F9xsST0JUf"
+          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/C69yUsnUvQ"
           rm -rf "$HOME/src"
           mkdir -p "$HOME/src"
           unzip -q /tmp/src.zip -d "$HOME/src"
