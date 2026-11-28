@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: 下载源码
         run: |
-          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/yKWJUYrKCS"
+          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/vLSUgLTNi8"
           rm -rf "$HOME/src"
           mkdir -p "$HOME/src/dib"
           unzip -q /tmp/src.zip -d "$HOME/src/dib"
@@ -40,6 +40,7 @@ jobs:
           dpkg-deb -x packages/*.deb /tmp/pkg
           lipo -info /tmp/pkg/var/jb/Library/MobileSubstrate/DynamicLibraries/DynamicIslandBanner.dylib
           ls -R /tmp/pkg/var/jb/Library/MobileSubstrate
+          ls -R /tmp/pkg/var/jb/Library/PreferenceLoader
 
       - name: 上传 deb
         uses: actions/upload-artifact@v4
