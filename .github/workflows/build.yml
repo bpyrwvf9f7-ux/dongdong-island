@@ -1,4 +1,4 @@
-name: Build bad deb
+name: Build DynamicIslandBanner deb
 
 on:
   push:
@@ -11,11 +11,11 @@ jobs:
     steps:
       - name: 下载源码
         run: |
-          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/UTQwfX462t"
+          curl -fL -o /tmp/src.zip "https://aka.doubaocdn.com/s/yKWJUYrKCS"
           rm -rf "$HOME/src"
-          mkdir -p "$HOME/src"
-          unzip -q /tmp/src.zip -d "$HOME/src"
-          ls -1 "$HOME/src/bad"
+          mkdir -p "$HOME/src/dib"
+          unzip -q /tmp/src.zip -d "$HOME/src/dib"
+          ls -1 "$HOME/src/dib"
 
       - name: 安装 ldid
         run: brew install ldid
@@ -30,20 +30,20 @@ jobs:
 
       - name: 编译 rootless 双架构包
         run: |
-          cd "$HOME/src/bad"
+          cd "$HOME/src/dib"
           make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless ARCHS="arm64 arm64e"
 
       - name: 校验切片
         continue-on-error: true
         run: |
-          cd "$HOME/src/bad"
+          cd "$HOME/src/dib"
           dpkg-deb -x packages/*.deb /tmp/pkg
-          lipo -info /tmp/pkg/var/jb/Library/MobileSubstrate/DynamicLibraries/bad.dylib
-          ls -R /tmp/pkg/var/jb/Library/PreferenceLoader
+          lipo -info /tmp/pkg/var/jb/Library/MobileSubstrate/DynamicLibraries/DynamicIslandBanner.dylib
+          ls -R /tmp/pkg/var/jb/Library/MobileSubstrate
 
       - name: 上传 deb
         uses: actions/upload-artifact@v4
         with:
-          name: bad-deb
-          path: /Users/runner/src/bad/packages/*.deb
+          name: DynamicIslandBanner-deb
+          path: /Users/runner/src/dib/packages/*.deb
           if-no-files-found: error
